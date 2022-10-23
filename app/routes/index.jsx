@@ -1,12 +1,13 @@
+import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { requireUserId } from "~/utils/session.server";
+import { requireUserSession } from "~/utils/session.server";
 
 export const loader = async ({ request }) => {
-  const userId = await requireUserId(request);
+  const { userId } = await requireUserSession(request);
 
-  return {
+  return json({
     userId,
-  };
+  });
 };
 
 export default function Index() {

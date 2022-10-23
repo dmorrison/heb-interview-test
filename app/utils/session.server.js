@@ -48,7 +48,7 @@ export async function login({
 }
 
 export async function logout(request) {
-  const session = await cookieSessionStorage.getSession(request.headers.get("Cookie"));
+  const session = await cookieSessionStorage.getSession(request.headers.get("cookie"));
   return redirect("/login", {
     headers: {
       "Set-Cookie": await cookieSessionStorage.destroySession(session),
@@ -56,11 +56,11 @@ export async function logout(request) {
   });
 }
 
-export async function requireUserId(
+export async function requireUserSession(
   request,
   redirectTo = new URL(request.url).pathname
 ) {
-  const session = await cookieSessionStorage.getSession(request.headers.get("Cookie"));
+  const session = await cookieSessionStorage.getSession(request.headers.get("cookie"));
   const userId = session.get("userId");
 
   if (!userId) {
@@ -68,5 +68,5 @@ export async function requireUserId(
     throw redirect(`/login?${searchParams}`);
   }
 
-  return userId;
+  return { userId };
 }
