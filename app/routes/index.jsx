@@ -1,9 +1,13 @@
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import { requireUserSession } from "~/sessions";
+import { getUserByAccountNumber } from "~/db";
 
 export const loader = async ({ request }) => {
   const user = await requireUserSession(request);
+
+  const dbUser = getUserByAccountNumber(user.accountNumber);
+  user.dbBalance = dbUser.balance;
 
   return json(user);
 };
@@ -15,7 +19,8 @@ export default function Index() {
     <div>
       <h1>Welcome to our ATM!</h1>
       <h2>Account Number: {user.accountNumber}</h2>
-      <h2>Current Balance: ${user.balance}</h2>
+      <h2>Current Balance (session): ${user.balance}</h2>
+      <h2>Current Balance (db): ${user.dbBalance}</h2>
       <h2>Daily Withdrawal Limit: ${user.dailyWithdrawalLimit}</h2>
       <h2>Withdrawals Made Today: ${user.dailyWithdrawalsMade}</h2>
 
@@ -24,6 +29,9 @@ export default function Index() {
           Logout
         </button>
       </form>
+
+      <br />
+      <Link className="text-white text-3xl font-bold" to={"/deposit"}>Make a Deposit</Link>
     </div>
   );
 }

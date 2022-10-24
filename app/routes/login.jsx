@@ -67,16 +67,15 @@ export async function action({ request }) {
     });
   }
 
-  const session = await getSession();
-
   // TODO: I'm caching balance and withdrawal info in the session. This could
   // cause problems since the session cookie and the db need to be kept in sync.
   // I'd need to think this through.
-
+  
   // TODO: Even though the session is encrypted, I'm not sure you'd want to
   // store potentially sensitive user info like this (and instead you might
   // want to look it up again from the db or cache more securely).
-
+  
+  const session = await getSession();
   session.set("accountNumber", user.accountNumber);
   session.set("balance", user.balance);
   session.set("dailyWithdrawalLimit", user.dailyWithdrawalLimit);
