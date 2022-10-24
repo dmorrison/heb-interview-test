@@ -27,6 +27,9 @@ Provide a basic ATM (Automated Teller Machine) implementation. At a minimum, thi
 
 # Known Issues
 
+- The passwords for mock data are stored and compared in plain text. For security, you'd want to store a hash of passwords and compare that.
+- User data is stored in the session cookie. Even though the session is encrypted, I'm not sure you'd want to store potentially sensitive user info like this (and instead you might want to look it up again from the db or cache more securely).
+
 # Ideas for Improvement
 
 - Improve form validation for login form. Currently, it only checks if fields are blank.

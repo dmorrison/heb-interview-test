@@ -1,6 +1,7 @@
 import { json, redirect } from "@remix-run/node";
 import { useActionData, useSearchParams } from "@remix-run/react";
 import { getSession, commitSession } from "~/sessions";
+import { getUserByAccountNumber } from "~/db";
 
 // TODO: Improve field validation.
 function validateAccountNumber(accountNumber) {
@@ -18,31 +19,15 @@ function validatePin(pin) {
 
 const badRequest = (data) => json(data, { status: 400 });
 
-async function validateCredentials({ accountNumber, pin }) {
-  // const user = await db.user.findUnique({
-  //   where: { accountNumber },
-  // });
-  // if (!user) return null;
-  // const isCorrectPin = await bcrypt.compare(
-  //   pin,
-  //   user.pinHash
-  // );
-  // if (!isCorrectPin) return null;
+function validateCredentials({ accountNumber, pin }) {
+  const user = getUserByAccountNumber(accountNumber);
+  if (!user) return null;
 
-  // return { accountNumber };
+  // TODO: Improve security of this to hash the password and compare that.
+  if (user.pin !== pin) return null;
 
-  return { accountNumber };
+  return user;
 }
-
-// async function createUserSession(accountNumber, redirectTo) {
-//   const session = await getSession();
-//   session.set("accountNumber", accountNumber);
-//   return redirect(redirectTo, {
-//     headers: {
-//       "Set-Cookie": await commitSession(session),
-//     },
-//   });
-// }
 
 export async function action({ request }) {
   const form = await request.formData();
@@ -74,7 +59,7 @@ export async function action({ request }) {
     return badRequest({ fieldErrors, fields });
   }
 
-  const user = await validateCredentials({ accountNumber, pin });
+  const user = validateCredentials({ accountNumber, pin });
   if (!user) {
     return badRequest({
       fields,
@@ -84,7 +69,12 @@ export async function action({ request }) {
 
   const session = await getSession();
 
-  session.set("accountNumber", accountNumber);
+  // TODO: Even though the session is encrypted, I'm not sure you'd want to
+  // store potentially sensitive user info like this (and instead you might
+  // want to look it up again from the db or cache more securely).
+  session.set("accountNumber", user.accountNumber);
+  session.set("balance", user.balance);
+  session.set("dailyWithdrawalLimit", user.dailyWithdrawalLimit);
 
   return redirect(redirectTo, {
     headers: {
