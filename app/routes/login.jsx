@@ -23,7 +23,7 @@ function validateCredentials({ accountNumber, pin }) {
   const user = getUserByAccountNumber(accountNumber);
   if (!user) return null;
 
-  // TODO: Improve security of this to hash the password and compare that.
+  // TODO: Improve security of this to hash the password and compare using that.
   if (user.pin !== pin) return null;
 
   return user;
