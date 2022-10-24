@@ -12,6 +12,7 @@ Hello! This is the submission for the H-E-B Digital interview take-home project 
 The users are hard-coded as mock data, and here are a couple to test:
 - Account #: 1111; PIN: 1234
 - Account #: 2222; PIN: 1234
+- Account #: 3333; PIN: 1234
 
 I tested the app using Node 18.11.0 and NPM 8.19.2 on macOS 12.6 (Intel architecture).
 
