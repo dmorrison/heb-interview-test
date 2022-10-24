@@ -10,7 +10,7 @@ const cookieSessionStorage = createCookieSessionStorage({
       secure: true,
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 5, // TODO: Verify this is 5 minutes.
+      maxAge: 60 * 60 * 24, // TODO: Decrease this timeout as appropriate.
       httpOnly: true,
   },
 });
