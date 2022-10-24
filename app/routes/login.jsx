@@ -29,6 +29,19 @@ function validateCredentials({ accountNumber, pin }) {
   return user;
 }
 
+export async function loader({ request }) {
+  const session = await getSession(
+    request.headers.get("cookie")
+  );
+
+  if (session.has("accountNumber")) {
+    // Redirect to the home page if they are already signed in.
+    return redirect("/");
+  }
+
+  return json({});
+}
+
 export async function action({ request }) {
   const form = await request.formData();
   const accountNumber = form.get("accountNumber");

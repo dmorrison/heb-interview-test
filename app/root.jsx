@@ -18,7 +18,7 @@ export const meta = () => ({
 
 export async function loader({ request }) {
   const session = await getSession(
-    request.headers.get("Cookie")
+    request.headers.get("cookie")
   );
   const message = session.get("globalMessage") || null;
 
