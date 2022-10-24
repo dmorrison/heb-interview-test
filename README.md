@@ -1,53 +1,32 @@
-# Welcome to Remix!
+# Introduction
 
-- [Remix Docs](https://remix.run/docs)
+Hello! This is the submission for the H-E-B Digital interview take-home project from Derek Morrison (me@derek-morrison.com).
 
-## Development
+# Running the Project
 
-From your terminal:
+1. Clone this repository.
+1. Run `npm install`.
+1. Run `npm run dev`.
+1. View the project at localhost:3000.
 
-```sh
-npm run dev
-```
+The users are hard-coded as mock data, and here are a couple to test:
+- Account #: 1111; PIN: 1234
+- Account #: 2222; PIN: 1234
 
-This starts your app in development mode, rebuilding assets on file changes.
+I tested the app using Node 18.11.0 and NPM 8.19.2 on macOS 12.6 (Intel architecture).
 
-## Deployment
+# Problem Description
 
-First, build your app for production:
+Provide a basic ATM (Automated Teller Machine) implementation. At a minimum, this program should offer the following features:
 
-```sh
-npm run build
-```
+- Enter a PIN to identify a unique customer
+- Query and show the current account balance
+- Simulate the withdrawal of cash
+- Simulate a deposit
+- A daily withdrawal limit
 
-Then run the app in production mode:
+# Known Issues
 
-```sh
-npm start
-```
+# Ideas for Improvement
 
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`
-
-### Using a Template
-
-When you ran `npx create-remix@latest` there were a few choices for hosting. You can run that again to create a new project, then copy over your `app/` folder to the new project that's pre-configured for your target server.
-
-```sh
-cd ..
-# create a new project, and pick a pre-configured host
-npx create-remix@latest
-cd my-new-remix-app
-# remove the new project's app (not the old one!)
-rm -rf app
-# copy your app over
-cp -R ../my-old-remix-app/app app
-```
+- Improve form validation for login form. Currently, it only checks if fields are blank.
