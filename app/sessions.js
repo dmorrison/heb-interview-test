@@ -22,12 +22,16 @@ export async function requireUserSession(
   redirectTo = new URL(request.url).pathname
 ) {
   const session = await getSession(request.headers.get("cookie"));
-  const accountNumber = session?.get("accountNumber");
 
-  if (!accountNumber) {
+  if (!session?.get("accountNumber")) {
     const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
     throw redirect(`/login?${searchParams}`);
   }
 
-  return { accountNumber };
+  return {
+    accountNumber: session.get("accountNumber"),
+    balance: session.get("balance"),
+    dailyWithdrawalLimit: session.get("dailyWithdrawalLimit"),
+    dailyWithdrawalsMade: session.get("dailyWithdrawalsMade"),
+  };
 }
