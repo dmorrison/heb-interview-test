@@ -41,7 +41,7 @@ export function getUserByAccountNumber(accountNumber) {
 
 export function deposit(accountNumber, amount) {
   const user = getUserByAccountNumber(accountNumber);
-  user.balance = amount;
+  user.balance += amount;
 
   return user.balance;
 }
