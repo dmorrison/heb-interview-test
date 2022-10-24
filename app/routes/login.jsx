@@ -63,13 +63,13 @@ export async function action({ request }) {
   //     });
   // }
 
-  const fields = { accountNumber, pin };
+  const fields = { accountNumber };
   const fieldErrors = {
     accountNumber: validateAccountNumber(accountNumber),
     pin: validatePin(pin),
   };
   if (Object.values(fieldErrors).some(Boolean)) {
-    return badRequest({ fieldErrors, fields });
+    return badRequest({ fields, fieldErrors });
   }
 
   const user = validateCredentials({ accountNumber, pin });
@@ -141,7 +141,6 @@ export default function Login() {
               name="pin"
               className={inputClassName}
               required
-              defaultValue={actionData?.fields?.pin}
               type="password"
             />
             {actionData?.fieldErrors?.pin ? (
