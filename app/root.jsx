@@ -1,4 +1,6 @@
+import { json } from "@remix-run/node";
 import {
+  useLoaderData,
   Links,
   LiveReload,
   Meta,
@@ -6,6 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { commitSession, getSession } from "~/sessions";
 
 export const meta = () => ({
   charset: "utf-8",
@@ -13,7 +16,25 @@ export const meta = () => ({
   viewport: "width=device-width,initial-scale=1",
 });
 
+export async function loader({ request }) {
+  const session = await getSession(
+    request.headers.get("Cookie")
+  );
+  const message = session.get("globalMessage") || null;
+
+  return json(
+    { message },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    }
+  );
+}
+
 export default function App() {
+  const { message } = useLoaderData();
+
   return (
     <html lang="en">
       <head>
@@ -21,6 +42,9 @@ export default function App() {
         <Links />
       </head>
       <body>
+        {message ? (
+          <div className="flash">{message}</div>
+        ) : null}
         <Outlet />
         <ScrollRestoration />
         <Scripts />

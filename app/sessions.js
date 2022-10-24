@@ -14,6 +14,7 @@ const cookieSessionStorage = createCookieSessionStorage({
       httpOnly: true,
   },
 });
+
 const { getSession, commitSession, destroySession } = cookieSessionStorage;
 export { getSession, commitSession, destroySession };
 
