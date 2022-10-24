@@ -22,7 +22,7 @@ export default function Index() {
       <h2>Current Balance (session): ${user.balance}</h2>
       <h2>Current Balance (db): ${user.dbBalance}</h2>
       <h2>Daily Withdrawal Limit: ${user.dailyWithdrawalLimit}</h2>
-      <h2>Withdrawals Made Today: ${user.dailyWithdrawalsMade}</h2>
+      <h2>Amount Available to Withdraw Today: ${user.dailyWithdrawalAmountRemaining}</h2>
 
       <form action="/logout" method="post">
         <button type="submit" className="button">
@@ -30,8 +30,11 @@ export default function Index() {
         </button>
       </form>
 
-      <br />
-      <Link className="text-white text-3xl font-bold" to={"/deposit"}>Make a Deposit</Link>
+      <br /><br />
+      <Link className="text-white text-3xl font-bold" to={"/deposit"}>Deposit Money</Link>
+
+      <br /><br />
+      <Link className="text-white text-3xl font-bold" to={"/withdraw"}>Withdraw Money</Link>
     </div>
   );
 }

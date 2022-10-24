@@ -34,5 +34,5 @@ Provide a basic ATM (Automated Teller Machine) implementation. At a minimum, thi
 
 # Ideas for Improvement
 
-- Improve form validation for login form. Currently, it only checks if fields are blank.
+- Improve form validation across the app. Currently, it only checks if fields are blank.
 - The current balance & amount of daily withdrawals made is cached in the session cookie. This should be thought out more, as it needs to be kept in sync with what's in the db.

@@ -79,7 +79,7 @@ export async function action({ request }) {
   session.set("accountNumber", user.accountNumber);
   session.set("balance", user.balance);
   session.set("dailyWithdrawalLimit", user.dailyWithdrawalLimit);
-  session.set("dailyWithdrawalsMade", user.dailyWithdrawalsMade);
+  session.set("dailyWithdrawalAmountRemaining", user.dailyWithdrawalAmountRemaining);
 
   return redirect(redirectTo, {
     headers: {

@@ -1,7 +1,7 @@
 import { json, redirect } from "@remix-run/node";
 import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import { commitSession, getSession, requireUserSession } from "~/sessions";
-import { deposit } from "~/db";
+import { withdraw } from "~/db";
 
 export const loader = async ({ request }) => {
   const user = await requireUserSession(request);
@@ -14,14 +14,16 @@ export const action = async ({ request }) => {
 
   const form = await request.formData();
   const amount = Number(form.get("amount")); // TODO: Validate this.
-  const { newBalance } = deposit(sessionUser.accountNumber, amount);
+  const { newBalance, newDailyWithdrawalAmountRemaining } =
+    withdraw(sessionUser.accountNumber, amount);
 
   const session = await getSession(request.headers.get("cookie"));
   session.set("balance", newBalance);
+  session.set("dailyWithdrawalAmountRemaining", newDailyWithdrawalAmountRemaining);
 
   session.flash(
     "globalMessage",
-    `Deposit of \$${amount} successfully completed.`
+    `Withdrawal of \$${amount} successfully completed.`
   );
 
   return redirect("/", {
@@ -31,7 +33,7 @@ export const action = async ({ request }) => {
   });
 };
 
-export default function Deposit() {
+export default function Withdraw() {
   const user = useLoaderData();
   const actionData = useActionData();
 
@@ -42,11 +44,10 @@ export default function Deposit() {
       <h2>Amount Available to Withdraw Today: ${user.dailyWithdrawalAmountRemaining}</h2>
 
       <form method="post">
-        <h1 className="text-center text-2xl text-white">Make a Deposit</h1>
-        <h3>Please insert cash.</h3>
+        <h1 className="text-center text-2xl text-white">Make a Withdrawal</h1>
 
         <label className="text-lg leading-7 text-white">
-            Deposit Amount:
+            Withdrawal Amount:
             <input
               type="text"
               name="amount"
@@ -56,7 +57,7 @@ export default function Deposit() {
           </label>
 
         <button type="submit" className="button">
-          Deposit Money
+          Withdraw Money
         </button>
       </form>
 

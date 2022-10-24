@@ -33,6 +33,6 @@ export async function requireUserSession(
     accountNumber: session.get("accountNumber"),
     balance: session.get("balance"),
     dailyWithdrawalLimit: session.get("dailyWithdrawalLimit"),
-    dailyWithdrawalsMade: session.get("dailyWithdrawalsMade"),
+    dailyWithdrawalAmountRemaining: session.get("dailyWithdrawalAmountRemaining"),
   };
 }
