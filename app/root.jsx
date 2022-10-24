@@ -9,12 +9,17 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import { commitSession, getSession } from "~/sessions";
+import styles from "~/styles/app.css"
 
 export const meta = () => ({
   charset: "utf-8",
-  title: "New Remix App",
+  title: "NiceBank ATM",
   viewport: "width=device-width,initial-scale=1",
 });
+
+export const links = () => ([
+  { rel: "stylesheet", href: styles }
+]);
 
 export async function loader({ request }) {
   const session = await getSession(
@@ -41,11 +46,15 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-green-100 relative px-5">
+        <div className="mt-20 w-full max-w-screen-lg mx-auto">
+          <Outlet />
+        </div>
+
         {message ? (
           <div className="flash">{message}</div>
         ) : null}
-        <Outlet />
+
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

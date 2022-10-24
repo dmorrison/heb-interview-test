@@ -91,13 +91,13 @@ export async function action({ request }) {
   });
 };
 
-const inputClassName = `w-full rounded border border-gray-500 px-2 py-1 text-lg text-purple-900 outline-purple-300 `;
+const inputClassName = `w-full rounded border border-gray-500 px-2 py-1 text-lg text-green-900 outline-green-300 `;
 export default function Login() {
   const actionData = useActionData();
   const [searchParams] = useSearchParams();
   return (
     <div className="flex justify-center items-center content-center text-white">
-      <div className="lg:m-10 my-10 md:w-2/3 lg:w-1/2 bg-gradient-to-br from-purple-500 via-purple-400 to-purple-300  font-bold px-5 py-6 rounded-md">
+      <div className="lg:m-10 my-10 md:w-2/3 lg:w-1/2 bg-gradient-to-br from-green-500 via-green-400 to-green-300 font-bold px-5 py-6 rounded-md">
         <form method="post">
           <h1 className="text-center text-2xl text-white">Login</h1>
           <input
@@ -147,7 +147,7 @@ export default function Login() {
             ) : null}
           </div>
           <button
-            className="my-4 py-2 px-7 text-purple-500 font-bold border-2 hover:scale-105 border-purple-500 rounded-lg bg-white"
+            className="my-4 py-2 px-7 text-green-500 font-bold border-2 hover:scale-105 border-green-500 rounded-lg bg-white"
             type="submit"
           >
             Login
