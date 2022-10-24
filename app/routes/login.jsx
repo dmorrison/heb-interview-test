@@ -3,6 +3,8 @@ import { useActionData, useSearchParams } from "@remix-run/react";
 import { getSession, commitSession } from "~/sessions";
 import { getUserByAccountNumber } from "~/db";
 
+const badRequest = (data) => json(data, { status: 400 });
+
 // TODO: Improve field validation.
 function validateAccountNumber(accountNumber) {
   if (typeof accountNumber !== "string" || accountNumber.length === 0) {
@@ -16,8 +18,6 @@ function validatePin(pin) {
     return `PIN is required.`;
   }
 }
-
-const badRequest = (data) => json(data, { status: 400 });
 
 function validateCredentials({ accountNumber, pin }) {
   const user = getUserByAccountNumber(accountNumber);
@@ -52,16 +52,6 @@ export async function action({ request }) {
   if (redirectTo === null || redirectTo.trim() === "") {
     redirectTo = "/";
   }
-
-  // if (
-  //     typeof accountNumber !== "string" ||
-  //     typeof pin !== "string" ||
-  //     typeof redirectTo !== "string"
-  // ) {
-  //     return badRequest({
-  //         formError: `Form not submitted correctly.`,
-  //     });
-  // }
 
   const fields = { accountNumber };
   const fieldErrors = {

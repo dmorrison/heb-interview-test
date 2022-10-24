@@ -14,8 +14,23 @@ export const action = async ({ request }) => {
 
   const form = await request.formData();
   const amount = Number(form.get("amount")); // TODO: Validate this.
-  const { newBalance, newDailyWithdrawalAmountRemaining } =
-    withdraw(sessionUser.accountNumber, amount);
+
+  let newBalance, newDailyWithdrawalAmountRemaining;
+  try {
+    const results = withdraw(sessionUser.accountNumber, amount);
+    newBalance = results.newBalance;
+    newDailyWithdrawalAmountRemaining = results.newDailyWithdrawalAmountRemaining;
+  } catch (error) {
+    return json(
+      {
+        fields: { amount },
+        formError: error.message,
+      },
+      {
+        status: 400,
+      }
+    );
+  }
 
   const session = await getSession(request.headers.get("cookie"));
   session.set("balance", newBalance);
@@ -47,14 +62,22 @@ export default function Withdraw() {
         <h1 className="text-center text-2xl text-white">Make a Withdrawal</h1>
 
         <label className="text-lg leading-7 text-white">
-            Withdrawal Amount:
-            <input
-              type="text"
-              name="amount"
-              required
-              defaultValue={actionData?.fields?.amount}
-            />
-          </label>
+          Withdrawal Amount:
+          <input
+            type="text"
+            name="amount"
+            required
+            defaultValue={actionData?.fields?.amount}
+          />
+        </label>
+
+        <div id="form-error-message">
+          {actionData?.formError ? (
+            <p className="text-red-500" role="alert">
+              {actionData.formError}
+            </p>
+          ) : null}
+        </div>
 
         <button type="submit" className="button">
           Withdraw Money
