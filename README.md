@@ -34,5 +34,6 @@ Provide a basic ATM (Automated Teller Machine) implementation. At a minimum, thi
 # Ideas for Improvement
 
 - Improve form validation across the app.
+- Improve and refactor styling.
 - The current balance & amount of daily withdrawals made is cached in the session cookie. This should be thought out more, as it needs to be kept in sync with what's in the db.
 - User data is stored in the session cookie. Even though the session is encrypted, I'm not sure you'd want to store potentially sensitive user info like this (and instead you might want to look it up again from the db or cache more securely).

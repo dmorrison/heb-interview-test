@@ -87,12 +87,14 @@ export default function Withdraw() {
           ) : null}
       </form>
 
-      <Link
-        to={"/"}
-        className="my-4 py-2 px-7 text-green-500 font-bold border-2 hover:scale-105 border-green-500 rounded-lg bg-white"
-      >
-        Back to Main Screen
-      </Link>
+      <div className="mt-4">
+        <Link
+          to={"/"}
+          className="my-4 py-2 px-7 text-green-500 font-bold border-2 hover:scale-105 border-green-500 rounded-lg bg-white"
+        >
+          Back to Main Screen
+        </Link>
+      </div>
     </div>
   );
 }
