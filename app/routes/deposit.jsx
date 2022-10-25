@@ -68,7 +68,7 @@ export default function Deposit() {
           type="submit"
           className="ml-3 my-4 py-2 px-7 text-green-500 font-bold border-2 hover:scale-105 border-green-500 rounded-lg bg-white"
         >
-          Deposit Money
+          Deposit
         </button>
       </form>
 
