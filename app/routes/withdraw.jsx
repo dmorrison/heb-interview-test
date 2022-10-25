@@ -7,7 +7,17 @@ import AccountInfo from "~/components/accountInfo";
 export const loader = async ({ request }) => {
   const user = await requireUserSession(request);
 
-  return json(user);
+  const session = await getSession(request.headers.get("Cookie"));
+  const withdrawMessage = session.get("withdrawMessage");
+
+  return json(
+    { withdrawMessage, user },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    }
+  );
 };
 
 export const action = async ({ request }) => {
@@ -33,16 +43,16 @@ export const action = async ({ request }) => {
     );
   }
 
-  const session = await getSession(request.headers.get("cookie"));
+  const session = await getSession(request.headers.get("Cookie"));
   session.set("balance", newBalance);
   session.set("dailyWithdrawalAmountRemaining", newDailyWithdrawalAmountRemaining);
 
   session.flash(
-    "globalMessage",
-    `Successfully withdraw \$${amount}. Please take your money.`
+    "withdrawMessage",
+    `Successfully withdrew \$${amount}. Please take your money.`
   );
 
-  return redirect("/", {
+  return redirect("/withdraw", {
     headers: {
       "Set-Cookie": await commitSession(session),
     },
@@ -50,7 +60,7 @@ export const action = async ({ request }) => {
 };
 
 export default function Withdraw() {
-  const user = useLoaderData();
+  const { withdrawMessage, user } = useLoaderData();
   const actionData = useActionData();
 
   return (
@@ -86,6 +96,10 @@ export default function Withdraw() {
           </div>
           ) : null}
       </form>
+
+      {withdrawMessage &&
+        <div className="text-2xl font-bold mb-8">{withdrawMessage}</div>
+      }
 
       <div className="mt-4">
         <Link

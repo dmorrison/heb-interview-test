@@ -7,7 +7,7 @@ export const loader = async () => {
 };
 
 export const action = async ({ request }) => {
-  const session = await getSession(request.headers.get("cookie"));
+  const session = await getSession(request.headers.get("Cookie"));
 
   return redirect("/", {
     headers: {

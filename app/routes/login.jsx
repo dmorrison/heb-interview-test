@@ -31,7 +31,7 @@ function validateCredentials({ accountNumber, pin }) {
 
 export async function loader({ request }) {
   const session = await getSession(
-    request.headers.get("cookie")
+    request.headers.get("Cookie")
   );
 
   if (session.has("accountNumber")) {

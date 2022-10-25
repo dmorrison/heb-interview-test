@@ -30,6 +30,7 @@ Provide a basic ATM (Automated Teller Machine) implementation. At a minimum, thi
 
 - The passwords for mock data are stored and compared in plain text. For security, you'd want to store a hash of passwords and compare that.
 - There's a temporary implementation for tracking the amount of withdrawals made in a day. There's a field on the user record that stores the amount of withdrawals made. This would need to be fleshed out with a real implementation that tracks the amount of transactions made in a day. As it stands, it will reset to $0 when the app is restarted.
+- Session flash messages (for depositing and withdrawing) can re-appear when navigating between pages. If you do a page refresh, though, it should go away. This is some kind of caching issue that I'd need to troubleshoot (I think multiple "Set-Cookie" headers are being sent).
 
 # Ideas for Improvement
 

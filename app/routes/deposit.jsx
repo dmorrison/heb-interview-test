@@ -7,7 +7,17 @@ import AccountInfo from "~/components/accountInfo";
 export const loader = async ({ request }) => {
   const user = await requireUserSession(request);
 
-  return json(user);
+  const session = await getSession(request.headers.get("Cookie"));
+  const depositMessage = session.get("depositMessage");
+
+  return json(
+    { depositMessage, user },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    }
+  );
 };
 
 export const action = async ({ request }) => {
@@ -17,15 +27,15 @@ export const action = async ({ request }) => {
   const amount = Number(form.get("amount")); // TODO: Validate this.
   const { newBalance } = deposit(sessionUser.accountNumber, amount);
 
-  const session = await getSession(request.headers.get("cookie"));
+  const session = await getSession(request.headers.get("Cookie"));
   session.set("balance", newBalance);
 
   session.flash(
-    "globalMessage",
+    "depositMessage",
     `Successfully deposited \$${amount}.`
   );
 
-  return redirect("/", {
+  return redirect("/deposit", {
     headers: {
       "Set-Cookie": await commitSession(session),
     },
@@ -33,7 +43,7 @@ export const action = async ({ request }) => {
 };
 
 export default function Deposit() {
-  const user = useLoaderData();
+  const { depositMessage, user } = useLoaderData();
   const actionData = useActionData();
 
   return (
@@ -61,6 +71,10 @@ export default function Deposit() {
           Deposit Money
         </button>
       </form>
+
+      {depositMessage &&
+        <div className="text-2xl font-bold mb-8">{depositMessage}</div>
+      }
 
       <div className="mt-4">
         <Link

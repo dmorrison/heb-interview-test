@@ -22,7 +22,7 @@ export async function requireUserSession(
   request,
   redirectTo = new URL(request.url).pathname
 ) {
-  const session = await getSession(request.headers.get("cookie"));
+  const session = await getSession(request.headers.get("Cookie"));
 
   if (!session?.get("accountNumber")) {
     const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);

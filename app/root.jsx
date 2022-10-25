@@ -9,7 +9,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import { commitSession, getSession } from "~/sessions";
+import { getSession } from "~/sessions";
 import styles from "~/styles/app.css"
 
 export const meta = () => ({
@@ -23,25 +23,14 @@ export const links = () => ([
 ]);
 
 export async function loader({ request }) {
-  const session = await getSession(
-    request.headers.get("cookie")
-  );
-
-  const globalMessage = session.get("globalMessage");
+  const session = await getSession(request.headers.get("Cookie"));
   const isLoggedIn = session.has("accountNumber");
 
-  return json(
-    { globalMessage, isLoggedIn },
-    {
-      headers: {
-        "Set-Cookie": await commitSession(session),
-      },
-    }
-  );
+  return json({ isLoggedIn });
 }
 
 export default function App() {
-  const { globalMessage, isLoggedIn } = useLoaderData();
+  const { isLoggedIn } = useLoaderData();
 
   return (
     <html lang="en">
@@ -68,10 +57,6 @@ export default function App() {
           </nav>
 
           <Outlet />
-
-          {globalMessage &&
-            <div className="text-2xl font-bold">{globalMessage}</div>
-          }
         </div>
 
         <ScrollRestoration />

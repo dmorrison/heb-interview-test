@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { useLoaderData, Link, Outlet } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import { requireUserSession } from "~/sessions";
 import AccountInfo from "~/components/accountInfo";
 
