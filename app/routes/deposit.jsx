@@ -22,7 +22,7 @@ export const action = async ({ request }) => {
 
   session.flash(
     "globalMessage",
-    `Deposit of \$${amount} successfully completed.`
+    `Successfully deposited \$${amount}.`
   );
 
   return redirect("/", {

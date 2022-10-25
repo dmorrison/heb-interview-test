@@ -39,7 +39,7 @@ export const action = async ({ request }) => {
 
   session.flash(
     "globalMessage",
-    `Withdrawal of \$${amount} successfully completed.`
+    `Successfully withdraw \$${amount}. Please take your money.`
   );
 
   return redirect("/", {

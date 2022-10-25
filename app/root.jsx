@@ -56,7 +56,7 @@ export default function App() {
               <Link className="text-white text-3xl font-bold" to={"/"}>NiceBank ATM</Link>
               
               {isLoggedIn &&
-                <div className="flex flex-col md:flex-row items-center justify-between gap-x-4 text-blue-50">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-x-4">
                   <form action="/logout" method="post">
                     <button type="submit" className="button">
                       Logout
@@ -68,11 +68,11 @@ export default function App() {
           </nav>
 
           <Outlet />
-        </div>
 
-        {globalMessage ? (
-          <div className="flash">{globalMessage}</div>
-        ) : null}
+          {globalMessage &&
+            <div className="text-2xl font-bold">{globalMessage}</div>
+          }
+        </div>
 
         <ScrollRestoration />
         <Scripts />
