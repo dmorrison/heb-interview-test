@@ -1,6 +1,7 @@
 import { json } from "@remix-run/node";
 import {
   useLoaderData,
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -25,10 +26,12 @@ export async function loader({ request }) {
   const session = await getSession(
     request.headers.get("cookie")
   );
-  const message = session.get("globalMessage") || null;
+
+  const globalMessage = session.get("globalMessage");
+  const isLoggedIn = session.has("accountNumber");
 
   return json(
-    { message },
+    { globalMessage, isLoggedIn },
     {
       headers: {
         "Set-Cookie": await commitSession(session),
@@ -38,7 +41,7 @@ export async function loader({ request }) {
 }
 
 export default function App() {
-  const { message } = useLoaderData();
+  const { globalMessage, isLoggedIn } = useLoaderData();
 
   return (
     <html lang="en">
@@ -47,12 +50,28 @@ export default function App() {
         <Links />
       </head>
       <body className="bg-green-100 relative px-5">
-        <div className="mt-20 w-full max-w-screen-lg mx-auto">
+        <div className="mt-20 w-full max-w-screen-sm mx-auto">
+          <nav className="bg-gradient-to-br from-green-400 via-green-500 to-green-500 w-full fixed top-0 left-0 px-5">
+            <div className="w-full max-w-screen-lg mx-auto flex justify-between content-center py-3">
+              <Link className="text-white text-3xl font-bold" to={"/"}>NiceBank ATM</Link>
+              
+              {isLoggedIn &&
+                <div className="flex flex-col md:flex-row items-center justify-between gap-x-4 text-blue-50">
+                  <form action="/logout" method="post">
+                    <button type="submit" className="button">
+                      Logout
+                    </button>
+                  </form>
+                </div>
+              }
+            </div>
+          </nav>
+
           <Outlet />
         </div>
 
-        {message ? (
-          <div className="flash">{message}</div>
+        {globalMessage ? (
+          <div className="flash">{globalMessage}</div>
         ) : null}
 
         <ScrollRestoration />

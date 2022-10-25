@@ -29,10 +29,10 @@ Provide a basic ATM (Automated Teller Machine) implementation. At a minimum, thi
 # Known Issues
 
 - The passwords for mock data are stored and compared in plain text. For security, you'd want to store a hash of passwords and compare that.
-- User data is stored in the session cookie. Even though the session is encrypted, I'm not sure you'd want to store potentially sensitive user info like this (and instead you might want to look it up again from the db or cache more securely).
 - There's a temporary implementation for tracking the amount of withdrawals made in a day. There's a field on the user record that stores the amount of withdrawals made. This would need to be fleshed out with a real implementation that tracks the amount of transactions made in a day. As it stands, it will reset to $0 when the app is restarted.
 
 # Ideas for Improvement
 
-- Improve form validation across the app. Currently, it only checks if fields are blank.
+- Improve form validation across the app.
 - The current balance & amount of daily withdrawals made is cached in the session cookie. This should be thought out more, as it needs to be kept in sync with what's in the db.
+- User data is stored in the session cookie. Even though the session is encrypted, I'm not sure you'd want to store potentially sensitive user info like this (and instead you might want to look it up again from the db or cache more securely).

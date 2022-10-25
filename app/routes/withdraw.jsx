@@ -2,6 +2,7 @@ import { json, redirect } from "@remix-run/node";
 import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import { commitSession, getSession, requireUserSession } from "~/sessions";
 import { withdraw } from "~/db";
+import AccountInfo from "~/components/accountInfo";
 
 export const loader = async ({ request }) => {
   const user = await requireUserSession(request);
@@ -54,38 +55,44 @@ export default function Withdraw() {
 
   return (
     <div>
-      <h2>Current Balance: ${user.balance}</h2>
-      <h2>Daily Withdrawal Limit: ${user.dailyWithdrawalLimit}</h2>
-      <h2>Amount Available to Withdraw Today: ${user.dailyWithdrawalAmountRemaining}</h2>
+      <AccountInfo user={user} />
 
       <form method="post">
-        <h1 className="text-center text-2xl text-white">Make a Withdrawal</h1>
+        <h1 className="text-2xl text-black mt-5 mb-2">Make a Withdrawal</h1>
 
-        <label className="text-lg leading-7 text-white">
+        <label className="text-lg text-black">
           Withdrawal Amount:
           <input
             type="text"
             name="amount"
             required
             defaultValue={actionData?.fields?.amount}
+            className="ml-3 rounded border border-gray-500 px-2 py-1 text-lg text-green-900 outline-green-300"
           />
         </label>
 
-        <div id="form-error-message">
-          {actionData?.formError ? (
-            <p className="text-red-500" role="alert">
-              {actionData.formError}
-            </p>
-          ) : null}
-        </div>
-
-        <button type="submit" className="button">
+        <button
+          type="submit"
+          className="ml-3 my-4 py-2 px-7 text-green-500 font-bold border-2 hover:scale-105 border-green-500 rounded-lg bg-white"
+        >
           Withdraw Money
         </button>
+
+        {actionData?.formError ? (
+          <div id="form-error-message" className="mb-5">
+              <p className="text-red-500" role="alert">
+                {actionData.formError}
+              </p>
+          </div>
+          ) : null}
       </form>
 
-      <br />
-      <Link className="text-white text-3xl font-bold" to={"/"}>Back to Main Screen</Link>
+      <Link
+        to={"/"}
+        className="my-4 py-2 px-7 text-green-500 font-bold border-2 hover:scale-105 border-green-500 rounded-lg bg-white"
+      >
+        Back to Main Screen
+      </Link>
     </div>
   );
 }
