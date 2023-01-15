@@ -1,21 +1,8 @@
-import { json } from "@remix-run/node";
-import { useLoaderData, Link } from "@remix-run/react";
-import { requireUserSession } from "~/sessions";
-import AccountInfo from "~/components/accountInfo";
-
-export const loader = async ({ request }) => {
-  const user = await requireUserSession(request);
-
-  return json(user);
-};
+import { Link } from "@remix-run/react";
 
 export default function Index() {
-  const user = useLoaderData();
-
   return (
     <>
-      <AccountInfo user={user} />
-      
       <div className="grid grid-cols-2">
         <div className="my-4 py-2 px-7">
           <Link

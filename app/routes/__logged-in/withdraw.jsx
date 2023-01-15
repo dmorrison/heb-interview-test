@@ -2,16 +2,13 @@ import { json, redirect } from "@remix-run/node";
 import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import { commitSession, getSession, requireUserSession } from "~/sessions";
 import { withdraw } from "~/db";
-import AccountInfo from "~/components/accountInfo";
 
 export const loader = async ({ request }) => {
-  const user = await requireUserSession(request);
-
   const session = await getSession(request.headers.get("Cookie"));
   const withdrawMessage = session.get("withdrawMessage");
 
   return json(
-    { withdrawMessage, user },
+    { withdrawMessage },
     {
       headers: {
         "Set-Cookie": await commitSession(session),
@@ -30,7 +27,8 @@ export const action = async ({ request }) => {
   try {
     const results = withdraw(sessionUser.accountNumber, amount);
     newBalance = results.newBalance;
-    newDailyWithdrawalAmountRemaining = results.newDailyWithdrawalAmountRemaining;
+    newDailyWithdrawalAmountRemaining =
+      results.newDailyWithdrawalAmountRemaining;
   } catch (error) {
     return json(
       {
@@ -45,7 +43,10 @@ export const action = async ({ request }) => {
 
   const session = await getSession(request.headers.get("Cookie"));
   session.set("balance", newBalance);
-  session.set("dailyWithdrawalAmountRemaining", newDailyWithdrawalAmountRemaining);
+  session.set(
+    "dailyWithdrawalAmountRemaining",
+    newDailyWithdrawalAmountRemaining
+  );
 
   session.flash(
     "withdrawMessage",
@@ -60,13 +61,11 @@ export const action = async ({ request }) => {
 };
 
 export default function Withdraw() {
-  const { withdrawMessage, user } = useLoaderData();
+  const { withdrawMessage } = useLoaderData();
   const actionData = useActionData();
 
   return (
     <div>
-      <AccountInfo user={user} />
-
       <form method="post">
         <h1 className="text-2xl text-black mt-5 mb-2">Make a Withdrawal</h1>
 
@@ -90,16 +89,16 @@ export default function Withdraw() {
 
         {actionData?.formError ? (
           <div id="form-error-message" className="mb-5">
-              <p className="text-red-500" role="alert">
-                {actionData.formError}
-              </p>
+            <p className="text-red-500" role="alert">
+              {actionData.formError}
+            </p>
           </div>
-          ) : null}
+        ) : null}
       </form>
 
-      {withdrawMessage &&
+      {withdrawMessage && (
         <div className="text-2xl font-bold mb-8">{withdrawMessage}</div>
-      }
+      )}
 
       <div className="mt-4">
         <Link
